@@ -23,8 +23,8 @@ try:
         engine='openpyxl'  # для .xlsx файлов
     )
     
-    print("Данные успешно загружены:")
-    print(df.head())
+    print("Данные успешно загружены")
+    
     
 except Exception as e:
     print(f"Ошибка при чтении файла: {e}")
@@ -36,11 +36,16 @@ df = df.rename(columns={'Дата счёта':'Acc_date', '№ дог':'Contr_nu
                         'Наименование работ': 'Job_desc', 'Сумма': 'Sum',
                         'Дата оплаты': 'Payment_date', 'Дата акта': 'Exec_date',
                         'Ответственный':'Responsible', 'Срок платежа':'Payment_time',
-                        'срок выполнения':'Exec_time'})
+                        'Cрок выполнения':'Exec_time'})
 
 df.drop(['Contr_num', 'Job_desc'], axis=1, inplace=True)
+df = df.dropna(subset=['Acc_date'])
 
-df['month'] = df['Acc_date'].dt.to_period('M')
+# df['month'] = df['Acc_date'].dt.to_period('M')
+
+# Вместо Period используем строки везде
+df['month'] = df['Acc_date'].dt.strftime('%Y-%m')  # Формат "2024-01"
+
 
 
 def get_layouts():

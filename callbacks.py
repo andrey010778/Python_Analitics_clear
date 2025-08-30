@@ -5,6 +5,9 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import settings as st
 import plotly.io as pio
+from dotenv import load_dotenv
+import os 
+
 
 # Установка кастомной паллетки цветов для всех графиков plotly
 pio.templates['custom'] = pio.templates['plotly'].update(
@@ -16,7 +19,43 @@ pio.templates.default='custom'
 
 #df = pd.read_csv('Clear_dash_new.csv')
 
+# Загрузка переменных из .env файла
+load_dotenv()
 
+# Получение путей из переменных окружения
+excel_file_path = os.getenv('EXCEL_FILE_PATH')
+sheet_name = os.getenv('SHEET_NAME')  # значение по умолчанию
+
+try:
+    df = pd.read_excel(
+        excel_file_path,
+        skiprows=1,
+        sheet_name=sheet_name,
+        engine='openpyxl'  # для .xlsx файлов
+    )
+    
+    print("Данные успешно загружены:")
+    
+    
+except Exception as e:
+    print(f"Ошибка при чтении файла: {e}")
+
+
+
+df = df.rename(columns={'Дата счёта':'Acc_date', '№ дог':'Contr_num', 
+                        'Заказчик':'Customer', 'Подразделение': 'Department',
+                        'Наименование работ': 'Job_desc', 'Сумма': 'Sum',
+                        'Дата оплаты': 'Payment_date', 'Дата акта': 'Exec_date',
+                        'Ответственный':'Responsible', 'Срок платежа':'Payment_time',
+                        'Cрок выполнения':'Exec_time'})
+
+df.drop(['Contr_num', 'Job_desc'], axis=1, inplace=True)
+df = df.dropna(subset=['Acc_date'])
+
+# df['month'] = df['Acc_date'].dt.to_period('M')
+
+# Вместо Period используем строки везде
+df['month'] = df['Acc_date'].dt.strftime('%Y-%m')  # Формат "2024-01"
 
 def format_days(days):
     #Функция для правильного склонения слова 'день'
