@@ -3,8 +3,45 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 import datetime as dt
 import settings as st
+from dotenv import load_dotenv
+import os 
 
-df = pd.read_csv('Clear_dash_new.csv')
+#df = pd.read_csv('Clear_dash_new.csv')
+
+# Загрузка переменных из .env файла
+load_dotenv()
+
+# Получение путей из переменных окружения
+excel_file_path = os.getenv('EXCEL_FILE_PATH')
+sheet_name = os.getenv('SHEET_NAME')  # значение по умолчанию
+
+try:
+    df = pd.read_excel(
+        excel_file_path,
+        skiprows=1,
+        sheet_name=sheet_name,
+        engine='openpyxl'  # для .xlsx файлов
+    )
+    
+    print("Данные успешно загружены:")
+    print(df.head())
+    
+except Exception as e:
+    print(f"Ошибка при чтении файла: {e}")
+
+
+
+df = df.rename(columns={'Дата счёта':'Acc_date', '№ дог':'Contr_num', 
+                        'Заказчик':'Customer', 'Подразделение': 'Department',
+                        'Наименование работ': 'Job_desc', 'Сумма': 'Sum',
+                        'Дата оплаты': 'Payment_date', 'Дата акта': 'Exec_date',
+                        'Ответственный':'Responsible', 'Срок платежа':'Payment_time',
+                        'срок выполнения':'Exec_time'})
+
+df.drop(['Contr_num', 'Job_desc'], axis=1, inplace=True)
+
+df['month'] = df['Acc_date'].dt.to_period('M')
+
 
 def get_layouts():
     # Русские названия месяцев для селектора

@@ -14,7 +14,9 @@ pio.templates['custom'] = pio.templates['plotly'].update(
 pio.templates.default='custom'
 
 
-df = pd.read_csv('Clear_dash_new.csv')
+#df = pd.read_csv('Clear_dash_new.csv')
+
+
 
 def format_days(days):
     #Функция для правильного склонения слова 'день'
