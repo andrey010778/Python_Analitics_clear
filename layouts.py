@@ -6,7 +6,7 @@ import settings as st
 from dotenv import load_dotenv
 import os 
 
-#df = pd.read_csv('Clear_dash_new.csv')
+
 
 # Загрузка переменных из .env файла
 load_dotenv()
@@ -41,7 +41,7 @@ df = df.rename(columns={'Дата счёта':'Acc_date', '№ дог':'Contr_nu
 df.drop(['Contr_num', 'Job_desc'], axis=1, inplace=True)
 df = df.dropna(subset=['Acc_date'])
 
-# df['month'] = df['Acc_date'].dt.to_period('M')
+
 
 # Вместо Period используем строки везде
 df['month'] = df['Acc_date'].dt.strftime('%Y-%m')  # Формат "2024-01"
