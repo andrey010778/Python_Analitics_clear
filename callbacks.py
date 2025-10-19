@@ -185,12 +185,12 @@ def register_callbacks(app):
 
         # 4. Статистика
         stats = dbc.ListGroup([
-            dbc.ListGroupItem(f'Количество счетов: {len(filtered_df)}'),
-            dbc.ListGroupItem(f'Общая сумма: {filtered_df['Sum'].sum():,.0f} ₽'),
-            dbc.ListGroupItem(f'Медианное значение по сумме счёта: {filtered_df['Sum'].median():,.0f} ₽'),
-            dbc.ListGroupItem(f'Среднее значение по сумме счёта: {filtered_df['Sum'].mean():,.0f} ₽'),
-            dbc.ListGroupItem(f'Среднее значение по выполнению: {format_days(filtered_df['Exec_time'].mean())}'),
-            dbc.ListGroupItem(f'Среднее время оплаты: {format_days(filtered_df['Payment_time'].mean())}'),
+            dbc.ListGroupItem(f"Количество счетов: {len(filtered_df)}"),
+            dbc.ListGroupItem(f"Общая сумма: {filtered_df['Sum'].sum():,.0f} ₽"),
+            dbc.ListGroupItem(f"Медианное значение по сумме счёта: {filtered_df['Sum'].median():,.0f} ₽"),
+            dbc.ListGroupItem(f"Среднее значение по сумме счёта: {filtered_df['Sum'].mean():,.0f} ₽"),
+            dbc.ListGroupItem(f"Среднее значение по выполнению: {format_days(filtered_df['Exec_time'].mean())}"),
+            dbc.ListGroupItem(f"Среднее время оплаты: {format_days(filtered_df['Payment_time'].mean())}"),
         ]) 
 
         return line_fig, bar_fig, pie_fig, stats
